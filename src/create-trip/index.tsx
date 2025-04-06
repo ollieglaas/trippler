@@ -19,6 +19,7 @@ import { addDays } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import LoadingAlert from "@/components/LoadingAlert";
 import { toast } from "sonner";
+import { useUserContext } from "@/context/UserContext";
 
 function CreateTrip() {
   const [formData, setFormData] = useState<FormDataType>({
@@ -34,6 +35,7 @@ function CreateTrip() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { setStoredUser } = useUserContext();
   const navigate = useNavigate();
 
   const handleInputChange = <K extends keyof FormDataType>(
@@ -76,10 +78,10 @@ function CreateTrip() {
         .replace("{people}", formData.people!)
         .replace("{budget}", formData.budget!);
 
-      console.log("Final prompt: ", FINAL_PROMPT);
+      // console.log("Final prompt: ", FINAL_PROMPT);
       setLoading(true);
       const result = await chatSession.sendMessage(FINAL_PROMPT);
-      console.log(result?.response?.text());
+      // console.log(result?.response?.text());
       saveTrip(result?.response?.text());
       toast("Trip generated successfully!");
     } catch (error) {
@@ -120,16 +122,18 @@ function CreateTrip() {
         "Trip saved successfully, navigating to:",
         `/view-trip/${documentId}`
       );
-      navigate(`/view-trip/${documentId}`);
+      setTimeout(() => {
+        navigate(`/view-trip/${documentId}`);
+      }, 1000);
     } catch (error) {
       console.error("Error saving trip:", error);
       setErrors({ general: "Failed to save trip. Please try again." });
     }
   };
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+  // useEffect(() => {
+  //   console.log(formData);
+  // }, [formData]);
 
   return (
     <div className="px-8 sm:px-10 md:px-20 lg:px-32 xl:px-56 pt-10 bg-gray-50">
@@ -222,6 +226,7 @@ function CreateTrip() {
       <LoginAlert
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
+        setStoredUser={setStoredUser}
         handleGenerateTrip={handleGenerateTrip}
       />
       <LoadingAlert modalOpen={loading} setModalOpen={setLoading} />

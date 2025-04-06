@@ -3,12 +3,14 @@ import LoginAlert from "./LoginAlert";
 import { Button } from "./ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { googleLogout } from "@react-oauth/google";
+import { useUserContext } from "@/context/UserContext";
 
 function Header() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
-  const [storedUser, setStoredUser] = useState(
-    localStorage.getItem("travel_planner_user")
-  );
+  // const [storedUser, setStoredUser] = useState(
+  //   localStorage.getItem("travel_planner_user")
+  // );
+  const { storedUser, setStoredUser } = useUserContext();
   const user = storedUser ? JSON.parse(storedUser) : null;
 
   return (

@@ -13,7 +13,7 @@ import axios from "axios";
 interface LoginAlertProps {
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setStoredUser: React.Dispatch<React.SetStateAction<string | null>>; // New prop for updating storedUser
+  setStoredUser: React.Dispatch<React.SetStateAction<string | null>>;
   handleGenerateTrip?: () => void;
 }
 
@@ -45,7 +45,7 @@ function LoginAlert({
       )
       .then((res) => {
         localStorage.setItem("travel_planner_user", JSON.stringify(res.data));
-        setStoredUser(JSON.stringify(res.data)); // Update state in Header component
+        setStoredUser(JSON.stringify(res.data));
         setModalOpen(false);
 
         if (handleGenerateTrip) {
@@ -58,14 +58,11 @@ function LoginAlert({
     <Dialog open={modalOpen} onOpenChange={setModalOpen}>
       <DialogContent>
         <DialogHeader className="mb-4">
-          <DialogTitle>
-            <img src="/logo.svg" alt="logo" />
+          <DialogTitle className="flex justify-center items-center">
+            <img src="/trippler_logo.png" alt="logo" className="w-1/3" />
           </DialogTitle>
         </DialogHeader>
         <div>
-          {/* <h2 className="text-gray-500 text-xl mb-8">
-            Please Sign in to continue
-          </h2> */}
           <Button className="w-full" onClick={() => login()}>
             <FcGoogle className="mr-2" />
             Sign in with Google
