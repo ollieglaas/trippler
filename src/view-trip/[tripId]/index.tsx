@@ -52,7 +52,7 @@ function ViewTrip() {
   }
 
   return (
-    <div className="p-10 md:px-20 lg:px-32 xl:px-56 flex flex-col bg-gray-100 ">
+    <div className="py-5 md:py-10 px-4 md:px-20 lg:px-32 xl:px-56 flex flex-col bg-gray-100 ">
       <TripInformation tripData={tripData} />
       <HotelInformation tripData={tripData} />
       <ItineraryInformation tripData={tripData} />

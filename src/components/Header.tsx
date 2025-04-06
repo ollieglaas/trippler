@@ -13,9 +13,9 @@ function Header({ storedUser }: { storedUser: string | null }) {
   }, [user]);
 
   return (
-    <header className="py-3 px-10 md:px-20 lg:px-32 xl:px-56 shadow-sm flex justify-between items-center">
+    <header className="py-3 px-4 md:px-20 lg:px-32 xl:px-56 shadow-sm flex justify-between items-center">
       <a href="/">
-        <img src="/trippler_logo.png" alt="logo" className="w-[150px]" />
+        <img src="/trippler_logo.png" alt="logo" className="w-[130px]" />
       </a>
       <div>
         {user ? (
