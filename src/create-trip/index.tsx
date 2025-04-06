@@ -4,7 +4,7 @@ import {
   SelectTravelList,
 } from "@/constants/options";
 import { FormDataType } from "@/types/globalTypes";
-import { PropsWithChildren, ReactNode, useEffect, useState } from "react";
+import { PropsWithChildren, ReactNode, useState } from "react";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import OptionSelect from "./OptionSelect";
 import { Button } from "@/components/ui/button";
