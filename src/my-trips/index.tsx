@@ -25,6 +25,7 @@ function MyTrips() {
   const [tripPhotos, setTripPhotos] = useState<{ [tripId: string]: string }>(
     {}
   );
+  const [loading, setLoading] = useState(true); // Add loading state
 
   const getUserTrips = useCallback(async () => {
     if (!user?.email) return;
@@ -44,6 +45,8 @@ function MyTrips() {
       setUserTrips(trips);
     } catch (error) {
       console.error("Error fetching trips:", error);
+    } finally {
+      setLoading(false); // Set loading to false after fetching
     }
   }, [user]);
 
@@ -100,7 +103,21 @@ function MyTrips() {
     <div className="px-8 sm:px-10 md:px-20 lg:px-32 xl:px-56 pt-10">
       <h1 className="text-4xl font-bold text-left mb-10">My Trips</h1>
 
-      {userTrips.length > 0 ? (
+      {loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mb-10">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div key={index} className="flex flex-col space-y-3">
+              <Skeleton className="h-[200px] w-full rounded-xl mb-9" />
+              <div className="space-y-5">
+                <Skeleton className="h-4 w-[150px]" />
+                <Skeleton className="h-4 w-[250px]" />
+                <Skeleton className="h-4 w-[100px]" />
+                <Skeleton className="h-4 w-[130px]" />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : userTrips.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mb-10">
           {userTrips.map((trip) => (
             <Card
@@ -155,18 +172,8 @@ function MyTrips() {
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-          {Array.from({ length: 4 }).map((_, index) => (
-            <div key={index} className="flex flex-col space-y-3">
-              <Skeleton className="h-[200px] w-full rounded-xl mb-9" />
-              <div className="space-y-5">
-                <Skeleton className="h-4 w-[150px]" />
-                <Skeleton className="h-4 w-[250px]" />
-                <Skeleton className="h-4 w-[100px]" />
-                <Skeleton className="h-4 w-[130px]" />
-              </div>
-            </div>
-          ))}
+        <div className="text-center text-xl text-gray-600">
+          No trips found. Start creating some trips!
         </div>
       )}
     </div>
