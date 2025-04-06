@@ -15,17 +15,19 @@ import destinationPics from "@/constants/destinationPics.json";
 import { getPlaceDetails, PHOTO_REF_URL } from "@/service/globalAPI";
 import { Skeleton } from "@/components/ui/skeleton";
 import DeleteAlert from "@/components/DeleteAlert";
+import { RxCross2 } from "react-icons/rx";
 
 function MyTrips() {
   const storedUser = localStorage.getItem("travel_planner_user");
   const user = storedUser ? JSON.parse(storedUser) : null;
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
   const [userTrips, setUserTrips] = useState<Trip[]>([]);
   const [tripPhotos, setTripPhotos] = useState<{ [tripId: string]: string }>(
     {}
   );
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
 
   const getUserTrips = useCallback(async () => {
     if (!user?.email) return;
@@ -46,15 +48,17 @@ function MyTrips() {
     } catch (error) {
       console.error("Error fetching trips:", error);
     } finally {
-      setLoading(false); // Set loading to false after fetching
+      setLoading(false);
     }
   }, [user]);
 
   const deleteTrip = async (tripId: string) => {
     const tripRef = doc(db, "AITrips", tripId);
     try {
+      console.log("deleting ID: ", tripId);
       await deleteDoc(tripRef);
       setUserTrips((prev) => prev.filter((trip) => trip.id !== tripId));
+      setDeleteModalOpen(false);
     } catch (error) {
       console.error("Error deleting trip: ", error);
     }
@@ -84,6 +88,11 @@ function MyTrips() {
     } catch (error) {
       console.error("Error fetching place photo:", error);
     }
+  };
+
+  const handleDeleteClick = (tripId: string) => {
+    setSelectedTripId(tripId);
+    setDeleteModalOpen(true);
   };
 
   useEffect(() => {
@@ -126,12 +135,14 @@ function MyTrips() {
             >
               <CardHeader className="px-0">
                 <div className="relative">
-                  <DeleteAlert
-                    modalOpen={deleteModalOpen}
-                    setModalOpen={setDeleteModalOpen}
-                    deleteTrip={deleteTrip}
-                    tripId={trip.id}
-                  />
+                  {selectedTripId === trip.id && (
+                    <DeleteAlert
+                      modalOpen={deleteModalOpen}
+                      setModalOpen={setDeleteModalOpen}
+                      deleteTrip={deleteTrip}
+                      tripId={trip.id}
+                    />
+                  )}
                   <Link to={`/view-trip/${trip.id}`}>
                     <img
                       src={tripPhotos[trip.id] || "/placeholder.jpg"}
@@ -168,6 +179,14 @@ function MyTrips() {
                   </div>
                 </Link>
               </CardContent>
+
+              {/* Trigger delete modal onClick */}
+              <div
+                className="rounded-full p-2 absolute top-2 right-2 cursor-pointer hover:bg-red-400  transition-colors duration-200 ease-in-out"
+                onClick={() => handleDeleteClick(trip.id)}
+              >
+                <RxCross2 color="white" />
+              </div>
             </Card>
           ))}
         </div>
