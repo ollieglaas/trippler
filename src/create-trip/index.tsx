@@ -104,7 +104,7 @@ function CreateTrip() {
       try {
         parsedTripData = JSON.parse(tripData);
       } catch (error) {
-        console.error("Failed to parse tripData:", tripData, error);
+        console.error("Failed to parse tripData: ", tripData, error);
         setErrors({ general: "Trip data could not be processed." });
         return;
       }
