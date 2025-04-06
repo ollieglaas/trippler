@@ -13,18 +13,19 @@ import axios from "axios";
 interface LoginAlertProps {
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setStoredUser: React.Dispatch<React.SetStateAction<string | null>>; // New prop for updating storedUser
   handleGenerateTrip?: () => void;
 }
 
 function LoginAlert({
   modalOpen,
   setModalOpen,
+  setStoredUser,
   handleGenerateTrip,
 }: LoginAlertProps) {
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => {
       getUserProfile(tokenResponse);
-      // localStorage.setItem("travel_planner_user", JSON.stringify(tokenResponse));
     },
     onError: (error) => {
       console.error("Login Failed:", error);
@@ -43,9 +44,10 @@ function LoginAlert({
         }
       )
       .then((res) => {
-        console.log(res);
         localStorage.setItem("travel_planner_user", JSON.stringify(res.data));
+        setStoredUser(JSON.stringify(res.data)); // Update state in Header component
         setModalOpen(false);
+
         if (handleGenerateTrip) {
           handleGenerateTrip();
         }

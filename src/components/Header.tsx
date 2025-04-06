@@ -1,16 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import LoginAlert from "./LoginAlert";
 import { Button } from "./ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { googleLogout } from "@react-oauth/google";
 
-function Header({ storedUser }: { storedUser: string | null }) {
+function Header() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [storedUser, setStoredUser] = useState(
+    localStorage.getItem("travel_planner_user")
+  );
   const user = storedUser ? JSON.parse(storedUser) : null;
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   return (
     <header className="py-3 px-4 md:px-20 lg:px-32 xl:px-56 shadow-sm flex justify-between items-center">
@@ -45,6 +44,7 @@ function Header({ storedUser }: { storedUser: string | null }) {
                   onClick={() => {
                     googleLogout();
                     localStorage.clear();
+                    setStoredUser(null);
                   }}
                 >
                   Logout
@@ -56,7 +56,11 @@ function Header({ storedUser }: { storedUser: string | null }) {
           <Button onClick={() => setLoginModalOpen(true)}>Sign in</Button>
         )}
       </div>
-      <LoginAlert modalOpen={loginModalOpen} setModalOpen={setLoginModalOpen} />
+      <LoginAlert
+        modalOpen={loginModalOpen}
+        setModalOpen={setLoginModalOpen}
+        setStoredUser={setStoredUser}
+      />
     </header>
   );
 }
