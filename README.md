@@ -16,3 +16,4 @@ This travel planning application creates personalised itineraries tailored to th
 **Google Places API** - fetch real time location data.  
 **Google Gemini 2.5 API** - AI assisted generation using language processing to create a personal travel plan based on each user input.  
 **Firestore** - cloud database for storing the travel plans and itineraries.
+npm i @vercel/analytics

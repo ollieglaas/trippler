@@ -10,6 +10,7 @@ import ViewTrip from "./view-trip/[tripId]/index.tsx";
 import MyTrips from "./my-trips/index.tsx";
 import { Toaster } from "sonner";
 import { UserProvider } from "./context/UserContext.tsx";
+import { Analytics } from "@vercel/analytics/react";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID}>
       <UserProvider>
+        <Analytics />
         <Toaster />
         <Header />
         <RouterProvider router={router} />
