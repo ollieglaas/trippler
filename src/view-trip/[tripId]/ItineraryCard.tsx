@@ -3,7 +3,13 @@ import { Separator } from "@/components/ui/separator";
 // import { getPlaceDetails, PHOTO_REF_URL } from "@/service/globalAPI";
 import { DailyPlan, ItineraryDay } from "@/types/globalTypes";
 import clsx from "clsx";
-import { PropsWithChildren, useEffect, useRef, useState } from "react";
+import {
+  PropsWithChildren,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Link } from "react-router-dom";
 
 interface ItineraryCardProps {
@@ -47,6 +53,8 @@ function ItineraryCard({ plan, i, day }: ItineraryCardProps) {
   //     // eslint-disable-next-line react-hooks/exhaustive-deps
   //   }, [plan]);
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
   return (
     <Link
       className="cursor-pointer hover:translate-x-1 transition-all duration-200 ease-in-out"
@@ -61,7 +69,10 @@ function ItineraryCard({ plan, i, day }: ItineraryCardProps) {
       <div>
         <h2 className="font-normal text-gray-600 text-lg">{placeName}</h2>
         <p className="text-gray-400 text-sm">{placeDetails}</p>
-        <div className="flex flex-row flex-wrap mt-4 gap-4 overflow-hidden">
+        <div
+          className="flex flex-row flex-wrap mt-4 gap-4 overflow-hidden"
+          ref={containerRef}
+        >
           {rating !== "N/A" && (
             <InfoBadge>
               <span>⭐️</span>
@@ -71,7 +82,7 @@ function ItineraryCard({ plan, i, day }: ItineraryCardProps) {
           {pricing !== "N/A" && (
             <InfoBadge>
               <span>💸</span>
-              <ScrollingText>
+              <ScrollingText containerRef={containerRef}>
                 <span className="text-sm">{pricing}</span>
               </ScrollingText>
             </InfoBadge>
@@ -93,7 +104,7 @@ function ItineraryCard({ plan, i, day }: ItineraryCardProps) {
           {timeToComplete !== "N/A" && (
             <InfoBadge>
               <span>⏳</span>
-              <ScrollingText>
+              <ScrollingText containerRef={containerRef}>
                 <span className="text-sm">{timeToComplete}</span>
               </ScrollingText>
             </InfoBadge>
@@ -123,8 +134,13 @@ const InfoBadge = ({ children }: PropsWithChildren) => {
   );
 };
 
-export const ScrollingText = ({ children }: PropsWithChildren) => {
-  const containerRef = useRef<HTMLDivElement>(null);
+const ScrollingText = ({
+  children,
+  containerRef,
+}: {
+  children: ReactNode;
+  containerRef: React.RefObject<HTMLDivElement | null>;
+}) => {
   const textRef = useRef<HTMLDivElement>(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
 
@@ -132,15 +148,23 @@ export const ScrollingText = ({ children }: PropsWithChildren) => {
     const container = containerRef.current;
     const text = textRef.current;
 
-    if (container && text) {
+    if (!container || !text) return;
+
+    const checkOverflow = () => {
       setIsOverflowing(text.scrollWidth > container.clientWidth);
-    }
-  }, [children]);
+    };
+
+    checkOverflow();
+
+    const resizeObserver = new ResizeObserver(checkOverflow);
+    resizeObserver.observe(container);
+
+    return () => resizeObserver.disconnect();
+  }, [children, containerRef]);
 
   return (
     <div
-      ref={containerRef}
-      className="relative overflow-hidden whitespace-nowrap max-w-[250px]" // adjust max-w as needed
+      className="relative overflow-hidden whitespace-nowrap" // adjust max-w as needed
     >
       <div
         ref={textRef}
