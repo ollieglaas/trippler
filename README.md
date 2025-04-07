@@ -8,11 +8,11 @@ This travel planning application creates personalised itineraries tailored to th
 
 ## Stack
 
-**ReactJS 19 & TypeScript** - generating the UI with type safety.
+**ReactJS 19 & TypeScript** - generating the UI with type safety.  
 **TailwindCSS** - fast and responsive styling.  
-**Shadcn** - component library built on top of Radix.
-**React Router** - for client side routing.
-**Google Auth** - secure authentication via Google login.
+**Shadcn** - component library built on top of Radix.  
+**React Router** - for client side routing.  
+**Google Auth** - secure authentication via Google login.  
 **Google Places API** - fetch real time location data.  
-**Google Gemini 2.5 API** - AI assisted generation using language processing to create a personal travel plan based on each user input.
+**Google Gemini 2.5 API** - AI assisted generation using language processing to create a personal travel plan based on each user input.  
 **Firestore** - cloud database for storing the travel plans and itineraries.
