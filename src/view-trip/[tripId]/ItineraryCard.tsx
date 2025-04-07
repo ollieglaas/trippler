@@ -2,7 +2,8 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 // import { getPlaceDetails, PHOTO_REF_URL } from "@/service/globalAPI";
 import { DailyPlan, ItineraryDay } from "@/types/globalTypes";
-import { PropsWithChildren } from "react";
+import clsx from "clsx";
+import { PropsWithChildren, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 interface ItineraryCardProps {
@@ -60,7 +61,7 @@ function ItineraryCard({ plan, i, day }: ItineraryCardProps) {
       <div>
         <h2 className="font-normal text-gray-600 text-lg">{placeName}</h2>
         <p className="text-gray-400 text-sm">{placeDetails}</p>
-        <div className="flex flex-row flex-wrap mt-4 gap-4">
+        <div className="flex flex-row flex-wrap mt-4 gap-4 overflow-hidden">
           {rating !== "N/A" && (
             <InfoBadge>
               <span>⭐️</span>
@@ -70,7 +71,9 @@ function ItineraryCard({ plan, i, day }: ItineraryCardProps) {
           {pricing !== "N/A" && (
             <InfoBadge>
               <span>💸</span>
-              <span className="text-sm">{pricing}</span>
+              <ScrollingText>
+                <span className="text-sm">{pricing}</span>
+              </ScrollingText>
             </InfoBadge>
           )}
           {tickets !== undefined && (
@@ -90,7 +93,9 @@ function ItineraryCard({ plan, i, day }: ItineraryCardProps) {
           {timeToComplete !== "N/A" && (
             <InfoBadge>
               <span>⏳</span>
-              <span className="text-sm">{timeToComplete}</span>
+              <ScrollingText>
+                <span className="text-sm">{timeToComplete}</span>
+              </ScrollingText>
             </InfoBadge>
           )}
         </div>
@@ -115,6 +120,35 @@ const InfoBadge = ({ children }: PropsWithChildren) => {
     >
       {children}
     </Badge>
+  );
+};
+
+export const ScrollingText = ({ children }: PropsWithChildren) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const text = textRef.current;
+
+    if (container && text) {
+      setIsOverflowing(text.scrollWidth > container.clientWidth);
+    }
+  }, [children]);
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative overflow-hidden whitespace-nowrap max-w-[250px]" // adjust max-w as needed
+    >
+      <div
+        ref={textRef}
+        className={clsx("inline-block", isOverflowing && "animate-scroll")}
+      >
+        {children}
+      </div>
+    </div>
   );
 };
 

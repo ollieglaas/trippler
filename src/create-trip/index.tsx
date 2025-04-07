@@ -15,7 +15,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from "@/service/firebaseConfig";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { DatePicker } from "./DatePicker";
-import { addDays } from "date-fns";
+// import { addDays } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import LoadingAlert from "@/components/LoadingAlert";
 import { toast } from "sonner";
@@ -25,8 +25,10 @@ function CreateTrip() {
   const [formData, setFormData] = useState<FormDataType>({
     destination: null,
     dates: {
-      start: new Date(),
-      end: addDays(new Date(), 7),
+      // start: new Date(),
+      // end: addDays(new Date(), 7),
+      start: undefined,
+      end: undefined,
     },
     budget: "",
     people: "",
