@@ -1,12 +1,18 @@
 import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
+import LoadingBar from "./LoadingBar";
 
 interface LoadingAlertProps {
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  progress: number;
 }
 
-function LoadingAlert({ modalOpen, setModalOpen }: LoadingAlertProps) {
+function LoadingAlert({
+  modalOpen,
+  setModalOpen,
+  progress,
+}: LoadingAlertProps) {
   return (
     <Dialog open={modalOpen} onOpenChange={setModalOpen}>
       <DialogContent
@@ -26,7 +32,8 @@ function LoadingAlert({ modalOpen, setModalOpen }: LoadingAlertProps) {
           <p className="text-lg text-center mb-4">
             This can take around a minute. Please wait.
           </p>
-          <div className="flex items-center justify-center">
+          <LoadingBar progress={progress} />
+          {/* <div className="flex items-center justify-center">
             <svg
               aria-hidden="true"
               className="inline w-10 h-10 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600 "
@@ -43,7 +50,7 @@ function LoadingAlert({ modalOpen, setModalOpen }: LoadingAlertProps) {
                 fill="currentFill"
               />
             </svg>
-          </div>
+          </div> */}
         </div>
       </DialogContent>
     </Dialog>

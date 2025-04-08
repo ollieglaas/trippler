@@ -4,7 +4,7 @@ import {
   SelectTravelList,
 } from "@/constants/options";
 import { FormDataType } from "@/types/globalTypes";
-import { PropsWithChildren, ReactNode, useState } from "react";
+import { PropsWithChildren, ReactNode, useRef, useState } from "react";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import OptionSelect from "./OptionSelect";
 import { Button } from "@/components/ui/button";
@@ -34,11 +34,45 @@ function CreateTrip() {
     people: "",
   });
 
+  const [progress, setProgress] = useState(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const { setStoredUser } = useUserContext();
   const navigate = useNavigate();
+
+  const clearProgressInterval = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
+
+  const simulateProgress = (
+    startPercent: number,
+    endPercent: number,
+    estimatedDuration: number
+  ) => {
+    clearProgressInterval();
+    const totalIncrement = endPercent - startPercent;
+    const intervalTime = 200;
+    const numIntervals = estimatedDuration / intervalTime;
+    const incrementAmount = totalIncrement / numIntervals;
+    const maxPercent = endPercent - 0.1;
+
+    intervalRef.current = setInterval(() => {
+      setProgress((prev) => {
+        const nextVal = prev + incrementAmount;
+        if (nextVal >= maxPercent) {
+          clearProgressInterval();
+          return maxPercent;
+        }
+        return nextVal;
+      });
+    }, intervalTime);
+  };
 
   const handleInputChange = <K extends keyof FormDataType>(
     name: K,
@@ -82,7 +116,11 @@ function CreateTrip() {
 
       // console.log("Final prompt: ", FINAL_PROMPT);
       setLoading(true);
+      simulateProgress(0, 90, 20000);
       const result = await chatSession.sendMessage(FINAL_PROMPT);
+      clearProgressInterval();
+      setProgress(90);
+      simulateProgress(90, 100, 5000);
       // console.log(result?.response?.text());
       console.log("Trip data is this: ", result?.response?.text());
       saveTrip(result?.response?.text());
@@ -107,7 +145,7 @@ function CreateTrip() {
 
       let parsedTripData;
       try {
-        const cleanData = tripData.replace(/```json|```/g, ""); // Remove ```json or ```
+        const cleanData = tripData.replace(/```json|```/g, ""); // removing ```json or ```
         parsedTripData = JSON.parse(cleanData);
       } catch (error) {
         console.error("Failed to parse tripData: ", parsedTripData, error);
@@ -122,6 +160,9 @@ function CreateTrip() {
         id: documentId,
       });
 
+      clearProgressInterval();
+      setProgress(100);
+
       console.log(
         "Trip saved successfully, navigating to:",
         `/view-trip/${documentId}`
@@ -132,6 +173,7 @@ function CreateTrip() {
     } catch (error) {
       console.error("Error saving trip:", error);
       setErrors({ general: "Failed to save trip. Please try again." });
+      clearProgressInterval();
     }
   };
 
@@ -233,7 +275,11 @@ function CreateTrip() {
         setStoredUser={setStoredUser}
         handleGenerateTrip={handleGenerateTrip}
       />
-      <LoadingAlert modalOpen={loading} setModalOpen={setLoading} />
+      <LoadingAlert
+        modalOpen={loading}
+        setModalOpen={setLoading}
+        progress={progress}
+      />
     </div>
   );
 }
