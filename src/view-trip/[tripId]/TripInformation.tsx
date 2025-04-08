@@ -66,7 +66,7 @@ function TripInformation({ tripData }: TripDataProps) {
             </span>
           </Badge>
           <Badge variant={"secondary"} className="py-2 px-3 space-x-1">
-            <span>🕣</span>
+            <span>📅</span>
             <span className="text-sm">
               {dates?.start} - {dates?.end}
             </span>

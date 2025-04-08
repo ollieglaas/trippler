@@ -109,8 +109,8 @@ function MyTrips() {
   }, [userTrips]);
 
   return (
-    <div className="px-8 sm:px-10 md:px-20 lg:px-32 xl:px-56 pt-10">
-      <h1 className="text-4xl font-bold text-left mb-10">My Trips</h1>
+    <div className="px-4 sm:px-10 md:px-20 lg:px-32 xl:px-56 pt-4">
+      <h1 className="text-4xl font-bold text-left mb-4">My Trips</h1>
 
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mb-10">
@@ -182,7 +182,7 @@ function MyTrips() {
 
               {/* Trigger delete modal onClick */}
               <div
-                className="rounded-full p-2 absolute top-2 right-2 cursor-pointer hover:bg-red-400  transition-colors duration-200 ease-in-out"
+                className="rounded-full p-2 absolute top-2 right-2 cursor-pointer hover:bg-red-400 transition-colors duration-200 ease-in-out"
                 onClick={() => handleDeleteClick(trip.id)}
               >
                 <RxCross2 color="white" />
