@@ -84,6 +84,7 @@ function CreateTrip() {
       setLoading(true);
       const result = await chatSession.sendMessage(FINAL_PROMPT);
       // console.log(result?.response?.text());
+      console.log("Trip data is this: ", result?.response?.text());
       saveTrip(result?.response?.text());
       toast("Trip generated successfully!");
     } catch (error) {
@@ -106,9 +107,10 @@ function CreateTrip() {
 
       let parsedTripData;
       try {
-        parsedTripData = JSON.parse(tripData);
+        const cleanData = tripData.replace(/```json|```/g, ""); // Remove ```json or ```
+        parsedTripData = JSON.parse(cleanData);
       } catch (error) {
-        console.error("Failed to parse tripData: ", tripData, error);
+        console.error("Failed to parse tripData: ", parsedTripData, error);
         setErrors({ general: "Trip data could not be processed." });
         return;
       }
