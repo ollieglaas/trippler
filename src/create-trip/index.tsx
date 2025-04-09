@@ -156,7 +156,7 @@ function CreateTrip() {
   };
 
   return (
-    <div className="px-8 sm:px-10 md:px-20 lg:px-32 xl:px-56 pt-10 bg-gray-50">
+    <div className="px-8 sm:px-10 md:px-20 lg:px-32 xl:px-56 pt-10 bg-gray-50  mt-15">
       <h1 className="text-4xl font-bold text-left">Create a Trip</h1>
 
       <div className="mt-5">

@@ -14,7 +14,7 @@ function Header() {
   const user = storedUser ? JSON.parse(storedUser) : null;
 
   return (
-    <header className="py-3 px-4 md:px-20 lg:px-32 xl:px-56 shadow-sm flex justify-between items-center">
+    <header className="fixed top-0 left-0 w-full bg-white z-50 py-3 px-4 md:px-20 lg:px-32 xl:px-56 shadow-sm flex justify-between items-center">
       <a href="/">
         <img src="/trippler_logo.png" alt="logo" className="w-[130px]" />
       </a>
