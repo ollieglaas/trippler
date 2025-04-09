@@ -86,7 +86,7 @@ function TripInformation({ tripData }: TripDataProps) {
               <CardHeader>
                 <CardTitle>{title}</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="-mt-5">
                 <p className="text-gray-400 text-xs">{content}</p>
               </CardContent>
             </Card>
