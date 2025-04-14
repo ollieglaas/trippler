@@ -1,8 +1,15 @@
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { db } from "@/service/firebaseConfig";
 // import { getPlaceDetails, PHOTO_REF_URL } from "@/service/globalAPI";
-import { DailyPlan, ItineraryDay } from "@/types/globalTypes";
+import {
+  DailyPlan,
+  ItineraryDay,
+  TimelineSelections,
+} from "@/types/globalTypes";
 import clsx from "clsx";
+import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import {
   PropsWithChildren,
   ReactNode,
@@ -11,14 +18,27 @@ import {
   useState,
 } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 interface ItineraryCardProps {
   plan: DailyPlan;
   i: number;
   day: ItineraryDay;
+  documentId: string;
+  timelineSelections: TimelineSelections[];
+  setTimelineSelections: React.Dispatch<
+    React.SetStateAction<TimelineSelections[]>
+  >;
 }
 
-function ItineraryCard({ plan, i, day }: ItineraryCardProps) {
+function ItineraryCard({
+  plan,
+  i,
+  documentId,
+  day,
+  timelineSelections,
+  setTimelineSelections,
+}: ItineraryCardProps) {
   const {
     placeName,
     placeDetails,
@@ -55,9 +75,80 @@ function ItineraryCard({ plan, i, day }: ItineraryCardProps) {
 
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const saveTimelineAction = async ({
+    date,
+    dailyPlan,
+  }: TimelineSelections) => {
+    const user = JSON.parse(localStorage.getItem("travel_planner_user")!);
+
+    const actionRef = doc(db, "TimelineActions", documentId);
+    const docSnap = await getDoc(actionRef);
+
+    const newAction = {
+      documentId,
+      userEmail: user.email,
+      date,
+      dailyPlan,
+    };
+
+    if (docSnap.exists()) {
+      await updateDoc(actionRef, {
+        actions: arrayUnion(newAction),
+      });
+    } else {
+      await setDoc(actionRef, {
+        actions: [newAction],
+      });
+    }
+
+    await updateDoc(actionRef, {
+      actions: arrayUnion({
+        documentId,
+        userEmail: user.email,
+        date,
+        dailyPlan,
+      }),
+    });
+  };
+
+  const handleAddToTimeline = async () => {
+    try {
+      await saveTimelineAction({
+        date: day.date,
+        dailyPlan: [plan],
+      });
+
+      setTimelineSelections((prev) => {
+        const existingDate = prev.find((sel) => sel.date === day.date);
+        if (existingDate) {
+          const alreadyAdded = existingDate.dailyPlan.some(
+            (p) => p.placeName === plan.placeName
+          );
+          if (alreadyAdded) return prev;
+
+          return prev.map((sel) =>
+            sel.date === day.date
+              ? {
+                  ...sel,
+                  dailyPlan: [...sel.dailyPlan, plan],
+                }
+              : sel
+          );
+        } else {
+          return [...prev, { date: day.date, dailyPlan: [plan] }];
+        }
+      });
+
+      toast.success("Added to your timeline!");
+    } catch (err) {
+      console.error("Failed to save timeline action:", err);
+      toast.error("Could not save timeline item.");
+    }
+  };
+
   return (
     <Link
-      className="cursor-pointer hover:translate-x-1 transition-all duration-200 ease-in-out"
+      className="cursor-pointer hover:translate-x-1 transition-all duration-200 ease-in-out "
       to={
         `https://www.google.com/maps/search/?api=1&query=` +
         geoCoordinates.latitude +
@@ -67,8 +158,35 @@ function ItineraryCard({ plan, i, day }: ItineraryCardProps) {
       target="_blank"
     >
       <div>
-        <h2 className="font-normal text-gray-600 text-lg">{placeName}</h2>
-        <p className="text-gray-400 text-sm">{placeDetails}</p>
+        <div className="flex flex-row justify-between items-center">
+          <h2 className="font-normal text-gray-600 text-lg">{placeName}</h2>
+          {timelineSelections.some(
+            (selection) =>
+              selection.date === day.date &&
+              selection.dailyPlan.some((p) => p.placeName === plan.placeName)
+          ) ? (
+            <Button
+              variant={"outline"}
+              className="rounded-full bg-green-100"
+              disabled
+            >
+              <span className="text-sm text-green-900 font-bold">✓</span>
+            </Button>
+          ) : (
+            <Button
+              variant={"outline"}
+              className="rounded-full"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                handleAddToTimeline();
+              }}
+            >
+              <span className="text-xl text-gray-400 font-light">+</span>
+            </Button>
+          )}
+        </div>
+        <p className="text-gray-400 text-sm w-11/12">{placeDetails}</p>
         <div
           className="flex flex-row flex-wrap mt-4 gap-4 overflow-hidden"
           ref={containerRef}

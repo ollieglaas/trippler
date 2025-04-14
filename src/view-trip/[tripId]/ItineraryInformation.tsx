@@ -1,18 +1,31 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trip } from "@/types/globalTypes";
+import { TimelineSelections, Trip } from "@/types/globalTypes";
 import { format } from "date-fns";
 import ItineraryCard from "./ItineraryCard";
+import TimelineDrawer from "./TimelineDrawer";
+import { useState } from "react";
 
-interface ItineraryInformationProps {
+export interface ItineraryInformationProps {
   tripData: Trip | null;
 }
 
 function ItineraryInformation({ tripData }: ItineraryInformationProps) {
+  const [timelineSelections, setTimelineSelections] = useState<
+    TimelineSelections[]
+  >([]);
+
   return (
     <>
-      <h2 className="text-3xl font-extralight tracking-wider">
-        Itinerary Suggestions
-      </h2>
+      <div className="flex flex-row justify-between items-center">
+        <h2 className="text-3xl font-extralight tracking-wider">
+          Itinerary Suggestions
+        </h2>
+        <TimelineDrawer
+          tripData={tripData}
+          timelineSelections={timelineSelections}
+          setTimelineSelections={setTimelineSelections}
+        />
+      </div>
       <div className="flex flex-col w-full gap-8 mt-5">
         {tripData?.tripData?.itinerary &&
         tripData.tripData.itinerary.length > 0 ? (
@@ -33,7 +46,15 @@ function ItineraryInformation({ tripData }: ItineraryInformationProps) {
                 <CardContent className="flex flex-col gap-8">
                   {day.dailyPlan.map((plan, i) => {
                     return (
-                      <ItineraryCard plan={plan} i={i} day={day} key={i} />
+                      <ItineraryCard
+                        plan={plan}
+                        i={i}
+                        day={day}
+                        key={i}
+                        documentId={tripData.id}
+                        timelineSelections={timelineSelections}
+                        setTimelineSelections={setTimelineSelections}
+                      />
                     );
                   })}
                 </CardContent>

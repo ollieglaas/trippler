@@ -91,3 +91,15 @@ export interface Trip {
   tripData: TripData;
   userSelection: UserSelection;
 }
+
+export interface TimelineSelections {
+  date: string;
+  dailyPlan: DailyPlan[];
+}
+
+export interface TimelineAction {
+  documentId: string;
+  userEmail: string;
+  date: string;
+  dailyPlan: DailyPlan[];
+}
