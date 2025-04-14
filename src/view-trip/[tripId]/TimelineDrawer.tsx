@@ -110,13 +110,13 @@ function TimelineDrawer({
       <SheetContent side="bottom">
         <SheetHeader>
           <SheetTitle className="text-2xl">My Personal Timeline</SheetTitle>
-          <SheetDescription className="flex flex-col lg:flex-row gap-4 overflow-y-scroll md:overflow-x-scroll max-h-[30vh]">
+          <SheetDescription className="flex flex-col lg:flex-row gap-4 overflow-y-scroll  lg:overflow-x-scroll max-h-[28vh]">
             {/* <p>
                   Here you can view your own personal itinerary, created by you
                   based on the itinerary suggestions.
                 </p> */}
             {tripData?.tripData.itinerary.map((day) => (
-              <div className="p-4 min-w-[33%]">
+              <div className="pt-4 min-w-[33%]">
                 <h3 className="text-xl font-semibold mb-4">
                   {format(new Date(day.date), "EEEE, MMMM d")}
                 </h3>
@@ -124,7 +124,7 @@ function TimelineDrawer({
                 <div className="flex flex-col lg:flex-row gap-4 ">
                   {groupedSelections[day.date] &&
                   groupedSelections[day.date].length > 0 ? (
-                    <div className=" rounded-lg  ">
+                    <div className=" rounded-lg w-full overflow-y-scroll overflow-x-hidden">
                       <div className="space-y-4">
                         {groupedSelections[day.date].map((plan, index) => (
                           <div
