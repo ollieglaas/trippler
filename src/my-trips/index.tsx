@@ -1,21 +1,21 @@
+import DeleteAlert from "@/components/DeleteAlert";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import destinationPics from "@/constants/destinationPics.json";
+import { db } from "@/service/firebaseConfig";
+import { getPhoto } from "@/service/globalAPI";
+import { Trip } from "@/types/globalTypes";
 import {
   collection,
-  query,
-  where,
-  getDocs,
   deleteDoc,
   doc,
+  getDocs,
+  query,
+  where,
 } from "firebase/firestore";
 import { useCallback, useEffect, useState } from "react";
-import { db } from "@/service/firebaseConfig";
-import { Trip } from "@/types/globalTypes";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Link } from "react-router-dom";
-import destinationPics from "@/constants/destinationPics.json";
-import { getPlaceDetails, PHOTO_REF_URL } from "@/service/globalAPI";
-import { Skeleton } from "@/components/ui/skeleton";
-import DeleteAlert from "@/components/DeleteAlert";
 import { RxCross2 } from "react-icons/rx";
+import { Link } from "react-router-dom";
 
 function MyTrips() {
   const storedUser = localStorage.getItem("travel_planner_user");
@@ -75,14 +75,8 @@ function MyTrips() {
         return;
       }
 
-      const data = { textQuery: trip.userSelection.destination.label };
-      const res = await getPlaceDetails(data);
-
-      if (res?.data?.places[0]?.photos?.[3]?.name) {
-        const photoUrl = PHOTO_REF_URL.replace(
-          "{NAME}",
-          res.data.places[0].photos[3].name
-        );
+      const photoUrl = await getPhoto(trip.userSelection.destination.label);
+      if (photoUrl) {
         setTripPhotos((prev) => ({ ...prev, [trip.id]: photoUrl }));
       }
     } catch (error) {
@@ -109,11 +103,11 @@ function MyTrips() {
   }, [userTrips]);
 
   return (
-    <div className="px-4 sm:px-10 md:px-20 lg:px-32 xl:px-56 pt-4 mt-15">
+    <div className="px-4 sm:px-10 md:px-20 lg:px-32 xl:px-56 pt-4 mt-15 bg-gray-50">
       <h1 className="text-4xl font-bold text-left mb-4">My Trips</h1>
 
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-4 mb-10">
           {Array.from({ length: 4 }).map((_, index) => (
             <div key={index} className="flex flex-col space-y-3">
               <Skeleton className="h-[200px] w-full rounded-xl mb-9" />
@@ -127,7 +121,7 @@ function MyTrips() {
           ))}
         </div>
       ) : userTrips.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-4 mb-10">
           {userTrips.map((trip) => (
             <Card
               key={trip.id}

@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { getPlaceDetails, PHOTO_REF_URL } from "@/service/globalAPI";
+import { getPhoto } from "@/service/globalAPI";
 import { HotelOption } from "@/types/globalTypes";
 import { useState, useEffect } from "react";
 
@@ -8,18 +8,8 @@ const HotelCard = ({ hotel }: { hotel: HotelOption }) => {
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
 
   const getPlacePhoto = async () => {
-    try {
-      const data = { textQuery: hotelName };
-      const res = await getPlaceDetails(data);
-      // console.log(`photos data: `, res?.data.places[0].photos[3].name);
-      const photoUrl = PHOTO_REF_URL.replace(
-        "{NAME}",
-        res?.data.places[0].photos[3].name
-      );
-      setPhotoUrl(photoUrl);
-    } catch (error) {
-      console.error("Error fetching place details:", error);
-    }
+    const photoUrl = await getPhoto(hotelName);
+    setPhotoUrl(photoUrl);
   };
 
   useEffect(() => {

@@ -17,3 +17,16 @@ export const getPlaceDetails = (data: unknown) => {
 export const PHOTO_REF_URL =
   `https://places.googleapis.com/v1/{NAME}/media?maxHeightPx=600&maxWidthPx=600&key=` +
   import.meta.env.VITE_GOOGLE_PLACE_API_KEY;
+
+export const getPhoto = async (placeId: string) => {
+  try {
+    const data = { textQuery: placeId };
+    const res = await getPlaceDetails(data);
+    const photoRef = res.data.places[0].photos[3].name;
+    const photoUrl = PHOTO_REF_URL.replace("{NAME}", photoRef);
+    return photoUrl;
+  } catch (error) {
+    console.error("Error fetching place photo: ", error);
+    return null;
+  }
+};

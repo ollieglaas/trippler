@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import destinationPics from "@/constants/destinationPics.json";
-import { getPlaceDetails, PHOTO_REF_URL } from "@/service/globalAPI";
+import { getPhoto } from "@/service/globalAPI";
 import { Trip } from "@/types/globalTypes";
 import { useEffect, useState } from "react";
 
@@ -26,14 +26,10 @@ function TripInformation({ tripData }: TripDataProps) {
         return;
       }
 
-      const data = { textQuery: destination.label };
-      const res = await getPlaceDetails(data);
-      // console.log(`photos data: `, res?.data.places[0].photos[3].name);
-      const photoUrl = PHOTO_REF_URL.replace(
-        "{NAME}",
-        res?.data.places[0].photos[3].name
-      );
-      setPhotoUrl(photoUrl);
+      const photoUrl = await getPhoto(destination.label);
+      if (photoUrl) {
+        setPhotoUrl(photoUrl);
+      }
     } catch (error) {
       console.error("Error fetching place details:", error);
     }
@@ -42,7 +38,6 @@ function TripInformation({ tripData }: TripDataProps) {
   useEffect(() => {
     if (tripData) {
       getPlacePhoto();
-      console.log(tripData);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tripData]);
