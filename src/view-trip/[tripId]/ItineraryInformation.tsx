@@ -17,7 +17,7 @@ function ItineraryInformation({ tripData }: ItineraryInformationProps) {
   return (
     <>
       <div className="flex flex-row justify-between items-center">
-        <h2 className="text-3xl font-extralight tracking-wider">
+        <h2 className="text-xl lg:text-3xl font-extralight tracking-wider">
           Itinerary Suggestions
         </h2>
         <TimelineDrawer

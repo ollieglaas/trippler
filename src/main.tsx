@@ -11,6 +11,7 @@ import MyTrips from "./my-trips/index.tsx";
 import { Toaster } from "sonner";
 import { UserProvider } from "./context/UserContext.tsx";
 import { Analytics } from "@vercel/analytics/react";
+import { ThemeProvider } from "./components/theme-provider.tsx";
 
 const router = createBrowserRouter([
   {
@@ -39,10 +40,12 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID}>
       <UserProvider>
-        <Analytics />
-        <Toaster />
-        <Header />
-        <RouterProvider router={router} />
+        <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+          <Analytics />
+          <Toaster />
+          <Header />
+          <RouterProvider router={router} />
+        </ThemeProvider>
       </UserProvider>
     </GoogleOAuthProvider>
   </StrictMode>

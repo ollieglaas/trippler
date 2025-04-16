@@ -9,6 +9,7 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import FormInputs from "./FormInputs";
+import { useTheme } from "@/components/theme-provider";
 
 function CreateTrip() {
   const [formData, setFormData] = useState<FormDataType>({
@@ -25,7 +26,7 @@ function CreateTrip() {
 
   const [progress, setProgress] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
+  const { theme } = useTheme();
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -156,7 +157,11 @@ function CreateTrip() {
   };
 
   return (
-    <div className="px-8 sm:px-10 md:px-20 lg:px-32 xl:px-56 pt-10 bg-gray-50  mt-15">
+    <div
+      className={`px-8 sm:px-10 md:px-20 lg:px-32 xl:px-56 pt-10 mt-15 ${
+        theme === "light" && "bg-gray-100"
+      }`}
+    >
       <h1 className="text-4xl font-bold text-left">Create a Trip</h1>
 
       <div className="mt-5">

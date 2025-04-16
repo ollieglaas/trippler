@@ -1,3 +1,4 @@
+import { useTheme } from "@/components/theme-provider";
 import React, { MouseEventHandler } from "react";
 
 interface OptionSelectProps {
@@ -15,11 +16,15 @@ function OptionSelect({
   onClick,
   selected,
 }: OptionSelectProps) {
+  const { theme } = useTheme();
+  const borderColor = theme === "light" ? "border-black" : "border-white";
   return (
     <div
       className={`p-4 flex flex-col gap-2 border ${
-        selected && "border-black shadow-xl"
-      } rounded-lg shadow-sm hover:shadow-lg  transition duration-200 ease-in-out cursor-pointer bg-white`}
+        selected && borderColor + " shadow-xl"
+      } rounded-lg shadow-sm hover:shadow-lg  transition duration-200 ease-in-out cursor-pointer ${
+        theme === "light" ? "bg-white" : "bg-card"
+      }`}
       onClick={onClick}
     >
       <div className="flex flex-row justify-between items-center">

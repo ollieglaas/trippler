@@ -1,8 +1,10 @@
 import Hero from "./components/Hero/Hero";
+import { useTheme } from "./components/theme-provider";
 
 function App() {
+  const { theme } = useTheme();
   return (
-    <div className="bg-gray-100 min-h-screen mt-15">
+    <div className={`min-h-screen mt-15 ${theme === "light" && "bg-gray-100"}`}>
       <Hero />
     </div>
   );

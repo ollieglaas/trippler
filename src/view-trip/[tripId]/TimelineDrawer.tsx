@@ -110,7 +110,7 @@ function TimelineDrawer({
       <SheetContent side="bottom">
         <SheetHeader>
           <SheetTitle className="text-2xl">My Personal Timeline</SheetTitle>
-          <SheetDescription className="flex flex-col lg:flex-row gap-4 overflow-y-scroll  lg:overflow-x-scroll max-h-[28vh]">
+          <SheetDescription className="flex flex-col lg:flex-row gap-4 overflow-y-scroll  lg:overflow-x-scroll max-h-[66vh] lg:max-h-[50vh]">
             {/* <p>
                   Here you can view your own personal itinerary, created by you
                   based on the itinerary suggestions.

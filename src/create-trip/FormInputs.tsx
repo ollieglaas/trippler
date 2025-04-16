@@ -9,6 +9,7 @@ import { DatePicker } from "./DatePicker";
 import OptionSelect from "./OptionSelect";
 import { FormDataType } from "@/types/globalTypes";
 import { useUserContext } from "@/context/UserContext";
+import { useTheme } from "@/components/theme-provider";
 
 interface FormInputsProps {
   formData: FormDataType;
@@ -34,6 +35,7 @@ function FormInputs({
   progress,
 }: FormInputsProps) {
   const { setStoredUser } = useUserContext();
+  const { theme } = useTheme();
 
   const handleInputChange = <K extends keyof FormDataType>(
     name: K,
@@ -60,6 +62,40 @@ function FormInputs({
               handleInputChange("destination", value);
             },
             placeholder: "Search...",
+            styles: {
+              control: (provided) => ({
+                ...provided,
+                background: theme === "light" ? "white" : "oklch(0.205 0 0)",
+                borderColor:
+                  theme === "light" ? "oklch(0.922 0 0)" : "oklch(1 0 0 / 10%)",
+              }),
+              input: (provided) => ({
+                ...provided,
+                color:
+                  theme === "light" ? "oklch(0.145 0 0)" : "oklch(0.985 0 0)",
+              }),
+              menu: (provided) => ({
+                ...provided,
+                background: theme === "light" ? "white" : "oklch(0.205 0 0)",
+                borderColor:
+                  theme === "light" ? "oklch(0.922 0 0)" : "oklch(1 0 0 / 10%)",
+              }),
+              option: (provided) => ({
+                ...provided,
+                background: theme === "light" ? "white" : "oklch(0.205 0 0)",
+              }),
+              singleValue: (provided) => ({
+                ...provided,
+                background: theme === "light" ? "white" : "oklch(0.205 0 0)",
+                color:
+                  theme === "light" ? "oklch(0.145 0 0)" : "oklch(0.985 0 0)",
+              }),
+              placeholder: (provided) => ({
+                ...provided,
+                color:
+                  theme === "light" ? "oklch(0.145 0 0)" : "oklch(0.985 0 0)",
+              }),
+            },
           }}
         />
       </InputContainer>

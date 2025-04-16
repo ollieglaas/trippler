@@ -9,7 +9,7 @@ interface HotelInformationProps {
 function HotelInformation({ tripData }: HotelInformationProps) {
   return (
     <>
-      <h2 className="text-3xl font-extralight tracking-wider">
+      <h2 className="text-2xl lg:text-3xl font-extralight tracking-wider">
         Hotel Recommendations
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5 mb-20">

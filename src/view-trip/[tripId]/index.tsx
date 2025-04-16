@@ -7,11 +7,13 @@ import TripInformation from "./TripInformation";
 import HotelInformation from "./HotelInformation";
 import ItineraryInformation from "./ItineraryInformation";
 import ContentSkeleton from "./ContentSkeleton";
+import { useTheme } from "@/components/theme-provider";
 
 function ViewTrip() {
   const { tripId } = useParams();
   const [tripData, setTripData] = useState<Trip | null>(null);
   const [loading, setLoading] = useState(true);
+  const { theme } = useTheme();
 
   useEffect(() => {
     if (tripId) {
@@ -52,7 +54,11 @@ function ViewTrip() {
   }
 
   return (
-    <div className="py-5 md:py-10 px-4 md:px-20 lg:px-32 xl:px-56 flex flex-col bg-gray-100  mt-15">
+    <div
+      className={`py-5 md:py-10 px-4 md:px-20 lg:px-32 xl:px-56 flex flex-col mt-15 ${
+        theme === "light" && "bg-gray-100"
+      }`}
+    >
       <TripInformation tripData={tripData} />
       <HotelInformation tripData={tripData} />
       <ItineraryInformation tripData={tripData} />
