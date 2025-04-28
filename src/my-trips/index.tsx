@@ -1,5 +1,4 @@
 import DeleteAlert from "@/components/DeleteAlert";
-import { useTheme } from "@/components/theme-provider";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import destinationPics from "@/constants/destinationPics.json";
@@ -21,7 +20,6 @@ import { Link } from "react-router-dom";
 function MyTrips() {
   const storedUser = localStorage.getItem("travel_planner_user");
   const user = storedUser ? JSON.parse(storedUser) : null;
-  const { theme } = useTheme();
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
@@ -105,11 +103,7 @@ function MyTrips() {
   }, [userTrips]);
 
   return (
-    <div
-      className={`px-4 sm:px-10 md:px-20 lg:px-32 xl:px-56 pt-4 mt-15 ${
-        theme === "light" && "bg-gray-100"
-      }`}
-    >
+    <div className={`px-4 sm:px-10 md:px-20 lg:px-32 xl:px-56 pt-4 mt-15 `}>
       <h1 className="text-4xl font-bold text-left mb-4">My Trips</h1>
 
       {loading ? (

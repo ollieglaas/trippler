@@ -22,10 +22,6 @@ function ViewTrip() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tripId]);
 
-  useEffect(() => {
-    console.log("Updated tripData: ", tripData);
-  }, [tripData]);
-
   const fetchTripData = async () => {
     if (!tripId) return;
 

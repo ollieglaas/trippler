@@ -12,28 +12,31 @@ import { Toaster } from "sonner";
 import { UserProvider } from "./context/UserContext.tsx";
 import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "./components/theme-provider.tsx";
+import PageLayout from "./components/PageLayout.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <PageLayout />, // <- animated layout
+    children: [
+      {
+        path: "",
+        element: <App />,
+      },
+      {
+        path: "create-trip",
+        element: <CreateTrip />,
+      },
+      {
+        path: "view-trip/:tripId",
+        element: <ViewTrip />,
+      },
+      {
+        path: "my-trips",
+        element: <MyTrips />,
+      },
+    ],
   },
-  {
-    path: "/create-trip",
-    element: <CreateTrip />,
-  },
-  {
-    path: "/view-trip/:tripId",
-    element: <ViewTrip />,
-  },
-  {
-    path: "/my-trips",
-    element: <MyTrips />,
-  },
-  // {
-  //   path: "/skeleton",
-  //   element: <Skeleton />,
-  // },
 ]);
 
 createRoot(document.getElementById("root")!).render(
@@ -44,6 +47,7 @@ createRoot(document.getElementById("root")!).render(
           <Analytics />
           <Toaster />
           <Header />
+
           <RouterProvider router={router} />
         </ThemeProvider>
       </UserProvider>
