@@ -1,7 +1,7 @@
 import LoadingAlert from "@/components/LoadingAlert";
 import LoginAlert from "@/components/LoginAlert";
 import { SelectBudgetOptions, SelectTravelList } from "@/constants/options";
-import React, { PropsWithChildren, ReactNode } from "react";
+import React, { PropsWithChildren, ReactNode, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -35,7 +35,11 @@ function FormInputs({
   progress,
 }: FormInputsProps) {
   const { setStoredUser } = useUserContext();
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
+
+  useEffect(() => {
+    console.log("theme: ", resolvedTheme);
+  });
 
   const handleInputChange = <K extends keyof FormDataType>(
     name: K,
@@ -65,35 +69,49 @@ function FormInputs({
             styles: {
               control: (provided) => ({
                 ...provided,
-                background: theme === "light" ? "white" : "oklch(0.205 0 0)",
+                background:
+                  resolvedTheme === "light" ? "white" : "oklch(0.205 0 0)",
                 borderColor:
-                  theme === "light" ? "oklch(0.922 0 0)" : "oklch(1 0 0 / 10%)",
+                  resolvedTheme === "light"
+                    ? "oklch(0.922 0 0)"
+                    : "oklch(1 0 0 / 10%)",
               }),
               input: (provided) => ({
                 ...provided,
                 color:
-                  theme === "light" ? "oklch(0.145 0 0)" : "oklch(0.985 0 0)",
+                  resolvedTheme === "light"
+                    ? "oklch(0.145 0 0)"
+                    : "oklch(0.985 0 0)",
               }),
               menu: (provided) => ({
                 ...provided,
-                background: theme === "light" ? "white" : "oklch(0.205 0 0)",
+                background:
+                  resolvedTheme === "light" ? "white" : "oklch(0.205 0 0)",
                 borderColor:
-                  theme === "light" ? "oklch(0.922 0 0)" : "oklch(1 0 0 / 10%)",
+                  resolvedTheme === "light"
+                    ? "oklch(0.922 0 0)"
+                    : "oklch(1 0 0 / 10%)",
               }),
               option: (provided) => ({
                 ...provided,
-                background: theme === "light" ? "white" : "oklch(0.205 0 0)",
+                background:
+                  resolvedTheme === "light" ? "white" : "oklch(0.205 0 0)",
               }),
               singleValue: (provided) => ({
                 ...provided,
-                background: theme === "light" ? "white" : "oklch(0.205 0 0)",
+                background:
+                  resolvedTheme === "light" ? "white" : "oklch(0.205 0 0)",
                 color:
-                  theme === "light" ? "oklch(0.145 0 0)" : "oklch(0.985 0 0)",
+                  resolvedTheme === "light"
+                    ? "oklch(0.145 0 0)"
+                    : "oklch(0.985 0 0)",
               }),
               placeholder: (provided) => ({
                 ...provided,
                 color:
-                  theme === "light" ? "oklch(0.145 0 0)" : "oklch(0.985 0 0)",
+                  resolvedTheme === "light"
+                    ? "oklch(0.145 0 0)"
+                    : "oklch(0.985 0 0)",
               }),
             },
           }}

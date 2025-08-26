@@ -4,6 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import destinationPics from "@/constants/destinationPics.json";
 import { db } from "@/service/firebaseConfig";
 import { getPhoto } from "@/service/globalAPI";
+import { toast } from "sonner";
 import { Trip } from "@/types/globalTypes";
 import {
   collection,
@@ -59,6 +60,7 @@ function MyTrips() {
       await deleteDoc(tripRef);
       setUserTrips((prev) => prev.filter((trip) => trip.id !== tripId));
       setDeleteModalOpen(false);
+      toast("Trip deleted successfully!");
     } catch (error) {
       console.error("Error deleting trip: ", error);
     }

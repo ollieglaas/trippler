@@ -1,6 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@theme {
+  --font-lexend: "Lexend", sans-serif;
+}
+
+
+.font-lexend {
+  font-family: var(--font-lexend);
+}
 
 @custom-variant dark (&:is(.dark *));
 
