@@ -43,7 +43,7 @@ function FormInputs({
 
   const handleInputChange = <K extends keyof FormDataType>(
     name: K,
-    value: FormDataType[K]
+    value: FormDataType[K],
   ) => {
     setFormData((prev) => ({
       ...prev,
