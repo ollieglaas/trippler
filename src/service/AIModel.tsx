@@ -5,7 +5,7 @@ const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
   // model: "gemini-2.5-pro-exp-03-25",
-  model: "gemini-2.5-flash",
+  model: "gemini-2.5-flash-lite",
 });
 
 const generationConfig = {
