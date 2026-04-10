@@ -56,15 +56,18 @@ function Hero() {
       animate="show"
     >
       <motion.div className="grid grid-cols-1 xl:grid-cols-2 w-full">
-        <motion.div className="col-span-1 flex flex-col justify-center items-start p-12 md:p-18 lg:p-28 gap-4 bg-white">
+        <motion.div className="col-span-1 flex flex-col justify-center items-start p-12 md:p-18 lg:p-28 gap-4 bg-white dark:bg-black">
           <motion.h1
             variants={itemVariants}
-            className="text-[#4962BF] text-5xl md:text-[58px] font-extrabold"
+            className="text-[#4962BF] dark:text-[#b8c8ff] text-5xl md:text-[58px] font-extrabold"
           >
             AI-Powered Travel Planning,{" "}
-            <span className="text-gray-800">Simplified</span>
+            <span className="text-gray-800 dark:text-gray-300">Simplified</span>
           </motion.h1>
-          <motion.h1 variants={itemVariants} className="text-xl text-gray-800">
+          <motion.h1
+            variants={itemVariants}
+            className="text-xl text-gray-800 dark:text-gray-300"
+          >
             Disover your perfect journey with personalised suggestions tailored
             to your budget and style
           </motion.h1>
@@ -101,7 +104,7 @@ function Hero() {
             <h3 className="font-semibold text-xl md:text-2xl text-center">
               {item.title}
             </h3>
-            <p className="text-center text-sm md:text-lg text-gray-600">
+            <p className="text-center text-sm md:text-lg text-gray-600 dark:text-gray-300">
               {item.description}
             </p>
           </motion.div>
