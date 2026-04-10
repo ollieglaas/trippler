@@ -15,8 +15,8 @@ function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-50 py-3 px-4 md:px-20 lg:px-32 xl:px-56 shadow-sm flex justify-between items-center ${
-        theme === "light" ? "bg-gray-100" : "bg-card"
+      className={`fixed top-0 left-0 w-full z-50 py-3 px-4 md:px-20 lg:px-32 xl:px-56 shadow-sm flex justify-between items-center backdrop-blur-xs ${
+        theme === "light" ? "bg-white/70" : "bg-card/70"
       } --font-lexend`}
     >
       <a href="/">
